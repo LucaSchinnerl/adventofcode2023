@@ -15,7 +15,7 @@ The repository is organized as follows:
     - main.rs: The Rust solution for the day's problem
   - solution.py: The Python solution for the day's problem (if applicable) 
   - input.txt: The input data for the day's problem
-README.md: A brief description of the problem and any notes on the solution
+  - README.md: A brief description of the problem and any notes on the solution
 
 ## Running the Solutions
 
