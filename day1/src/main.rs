@@ -1,7 +1,8 @@
+use rayon;
+
 fn main() {
     let input = include_str!("../input.txt");
-    let part_one = part_one(input);
-    let part_two = part_two(input);
+    let (part_one, part_two) = rayon::join(|| part_one(input), || part_two(input));
 
     println!("Part One: {}", part_one);
     println!("Part Two: {}", part_two);
