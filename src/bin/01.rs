@@ -1,11 +1,10 @@
 use rayon;
 
-fn main() {
-    let input = include_str!("../input.txt");
+#[aoc::main(01)]
+fn main(input: &str) -> (u32, u32) {
     let (part_one, part_two) = rayon::join(|| part_one(input), || part_two(input));
 
-    println!("Part One: {}", part_one);
-    println!("Part Two: {}", part_two);
+    (part_one, part_two)
 }
 
 fn part_one(input: &str) -> u32 {

@@ -1,9 +1,23 @@
 use std::cmp::max;
 
-fn main() {
-    let input = include_str!("../input.txt");
+#[aoc::main(02)]
+fn main(input: &str) -> (u32, u32) {
+    solution(input)
+}
 
-    println!("{:?}", solution(input));
+fn solution(input: &str) -> (u32, u32) {
+    let mut part1 = 0;
+    let mut part2 = 0;
+
+    input.lines().for_each(|x| {
+        let rgb = max_cubes(x);
+        if rgb.is_valid() {
+            part1 += parse_game_id(x);
+        }
+        part2 += rgb.power();
+    });
+
+    (part1, part2)
 }
 
 struct RGB {
@@ -49,9 +63,7 @@ fn max_cubes(input: &str) -> RGB {
             let t = x.split(' ').collect::<Vec<&str>>();
             (t[1], t[0].parse::<u32>().unwrap())
         })
-        .for_each(|(color, number)| {
-           rgb.max(color, number)
-        });
+        .for_each(|(color, number)| rgb.max(color, number));
     rgb
 }
 
@@ -61,22 +73,6 @@ fn parse_game_id(input: &str) -> u32 {
         .collect::<Vec<&str>>()[1]
         .parse::<u32>()
         .unwrap();
-}
-
-fn solution(input: &str) -> (u32, u32) {
-    let mut part1 = 0;
-    let mut part2 = 0;
-
-    input
-        .lines()
-        .for_each(|x| {
-            let rgb = max_cubes(x);
-            if rgb.is_valid() {
-                part1 += parse_game_id(x);
-            }
-            part2 += rgb.power();
-        });
-    (part1, part2)
 }
 
 #[cfg(test)]
