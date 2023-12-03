@@ -69,11 +69,7 @@ fn get_digit_ranges(input: &str) -> Vec<NumberRange> {
         .collect()
 }
 
-fn add_adjacent(
-    map: &Vec<Vec<char>>,
-    r: &NumberRange,
-    total_points: &mut HashMap<Point, Vec<u32>>,
-) {
+fn add_adjacent(map: &[Vec<char>], r: &NumberRange, total_points: &mut HashMap<Point, Vec<u32>>) {
     (r.y_start..=r.y_end).for_each(|y| {
         (r.x_start..=r.x_end).for_each(|x| {
             let temp_point = Point { x, y };

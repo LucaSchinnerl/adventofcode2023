@@ -20,15 +20,15 @@ fn solution(input: &str) -> (u32, u32) {
     (part1, part2)
 }
 
-struct RGB {
+struct Rgb {
     blue: u32,
     red: u32,
     green: u32,
 }
 
-impl RGB {
-    fn new() -> RGB {
-        RGB {
+impl Rgb {
+    fn new() -> Rgb {
+        Rgb {
             blue: 0,
             red: 0,
             green: 0,
@@ -53,9 +53,9 @@ impl RGB {
     }
 }
 
-fn max_cubes(input: &str) -> RGB {
+fn max_cubes(input: &str) -> Rgb {
     let games = input.split(": ").nth(1).unwrap().replace(';', ",");
-    let mut rgb = RGB::new();
+    let mut rgb = Rgb::new();
 
     games
         .split(", ")
