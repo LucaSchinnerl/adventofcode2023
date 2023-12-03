@@ -34,7 +34,7 @@ struct NumberRange {
     number: u32,
 }
 
-#[derive(Debug, PartialEq, Clone, Copy, Hash, Eq)]
+#[derive(PartialEq, Hash, Eq)]
 struct Point {
     x: usize,
     y: usize,
