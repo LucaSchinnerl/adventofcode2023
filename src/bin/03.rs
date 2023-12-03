@@ -3,34 +3,24 @@ use std::collections::HashMap;
 
 #[aoc::main(03)]
 fn main(input: &str) -> (u32, u32) {
-    let r = solution(input);
-
-    (r.0, r.1)
+    solution(input)
 }
 
 fn solution(input: &str) -> (u32, u32) {
     let ranges = get_digit_ranges(input);
+    let map: Vec<Vec<char>> = input.lines().map(|l| l.chars().collect()).collect();
 
-    let map = input
-        .lines()
-        .map(|l| l.chars().collect::<Vec<_>>())
-        .collect::<Vec<_>>();
-
-    let mut total_points = HashMap::new();
-
-    ranges.iter().for_each(|r| {
-        add_adjecient(&map, r, &mut total_points);
+    let total_points = ranges.iter().fold(HashMap::new(), |mut acc, r| {
+        add_adjacent(&map, r, &mut acc);
+        acc
     });
 
-    let mut p1 = 0;
-    let mut p2 = 0;
-
-    total_points.iter().for_each(|(_, v)| {
-        p1 += v.iter().sum::<u32>();
-        if v.len() > 1 {
-            p2 += v.iter().product::<u32>();
-        }
-    });
+    let p1 = total_points.values().map(|v| v.iter().sum::<u32>()).sum();
+    let p2 = total_points
+        .values()
+        .filter(|v| v.len() > 1)
+        .map(|v| v.iter().product::<u32>())
+        .sum();
 
     (p1, p2)
 }
@@ -51,56 +41,50 @@ struct Point {
 }
 
 fn get_digit_ranges(input: &str) -> Vec<NumberRange> {
-    let mut result = Vec::new();
     let re = Regex::new(r"\d+").unwrap();
 
-    for (y, line) in input.lines().enumerate() {
-        for mat in re.find_iter(line) {
-            let mut x_start = mat.start();
-            x_start = x_start.saturating_sub(1);
-            let mut x_end = mat.end() - 1;
-            if x_end != line.len() - 1 {
-                x_end += 1;
-            }
+    input
+        .lines()
+        .enumerate()
+        .flat_map(|(y, line)| {
+            re.find_iter(line).map(move |mat| {
+                let x_start = mat.start().saturating_sub(1);
+                let x_end = if mat.end() != line.len() {
+                    mat.end()
+                } else {
+                    mat.end() - 1
+                };
+                let y_start = y.saturating_sub(1);
+                let y_end = if y != line.len() - 1 { y + 1 } else { y };
 
-            let mut y_start = y;
-            let mut y_end = y;
-
-            y_start = y_start.saturating_sub(1);
-
-            if y_end != line.len() - 1 {
-                y_end += 1;
-            }
-
-            result.push(NumberRange {
-                x_start,
-                x_end,
-                y_start,
-                y_end,
-                number: mat.as_str().parse::<u32>().unwrap(),
-            });
-        }
-    }
-    result
+                NumberRange {
+                    x_start,
+                    x_end,
+                    y_start,
+                    y_end,
+                    number: mat.as_str().parse::<u32>().unwrap(),
+                }
+            })
+        })
+        .collect()
 }
 
-fn add_adjecient(
+fn add_adjacent(
     map: &Vec<Vec<char>>,
     r: &NumberRange,
     total_points: &mut HashMap<Point, Vec<u32>>,
 ) {
-    for y in r.y_start..=r.y_end {
-        for x in r.x_start..=r.x_end {
+    (r.y_start..=r.y_end).for_each(|y| {
+        (r.x_start..=r.x_end).for_each(|x| {
+            let temp_point = Point { x, y };
             if !map[y][x].is_numeric() && map[y][x] != '.' {
-                let temp_point = Point { x, y };
                 total_points
                     .entry(temp_point)
                     .or_insert(Vec::new())
                     .push(r.number);
-                return ;
             }
-        }
-    }
+        });
+    });
 }
 
 #[cfg(test)]
