@@ -1,5 +1,3 @@
-use rayon;
-
 #[aoc::main(01)]
 fn main(input: &str) -> (u32, u32) {
     let (part_one, part_two) = rayon::join(|| part_one(input), || part_two(input));
