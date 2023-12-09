@@ -27,6 +27,8 @@ fn solution(races: &[Race]) -> u64 {
 }
 
 fn parse_input(input: &str) -> (Vec<Race>, Vec<Race>) {
+    let (_time, _distance) = input.split_once('\n').unwrap();
+
     let re = Regex::new(r"\b\d+\b").unwrap();
     let numbers = re.captures_iter(input);
     let mut time = Vec::new();
