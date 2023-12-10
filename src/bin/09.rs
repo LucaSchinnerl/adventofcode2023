@@ -30,11 +30,10 @@ fn predict(numbers: &Vec<i64>, part: &str) -> i64 {
 }
 
 fn calc_diff(numbers: &Vec<i64>) -> Vec<i64> {
-    let mut diff = Vec::new();
-    for i in 1..numbers.len() {
-        diff.push(numbers[i] - numbers[i - 1]);
-    }
-    diff
+    numbers
+        .windows(2)
+        .map(|l,r| l-r)
+        .collect()
 }
 
 #[cfg(test)]
