@@ -29,11 +29,8 @@ fn predict(numbers: &Vec<i64>, part: &str) -> i64 {
     }
 }
 
-fn calc_diff(numbers: &Vec<i64>) -> Vec<i64> {
-    numbers
-        .windows(2)
-        .map(|l,r| l-r)
-        .collect()
+fn calc_diff(numbers: &[i64]) -> Vec<i64> {
+    numbers.windows(2).map(|w| w[1] - w[0]).collect()
 }
 
 #[cfg(test)]
