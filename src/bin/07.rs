@@ -74,7 +74,6 @@ impl Hand {
 fn sort_string_with_custom_values(s: String, part2: bool) -> String {
     let mut chars: Vec<char> = s.chars().collect();
     chars.sort_by_key(|a| get_value(*a, part2));
-    //chars.reverse();
     chars.into_iter().collect()
 }
 
@@ -97,15 +96,14 @@ fn get_value(c: char, part2: bool) -> u32 {
 
 fn complex_criterion(a: &Hand, b: &Hand, part2: bool) -> std::cmp::Ordering {
     match a.rank(part2).cmp(&b.rank(part2)) {
-        std::cmp::Ordering::Less => std::cmp::Ordering::Less,
-        std::cmp::Ordering::Greater => std::cmp::Ordering::Greater,
         std::cmp::Ordering::Equal => a
             .cards
             .chars()
             .zip(b.cards.chars())
             .map(|(a, b)| get_value(a, part2).cmp(&get_value(b, part2)))
             .find(|&ordering| ordering != std::cmp::Ordering::Equal)
-            .unwrap_or(std::cmp::Ordering::Equal),
+            .unwrap(),
+        _ => a.rank(part2).cmp(&b.rank(part2)),
     }
 }
 
